@@ -64,6 +64,16 @@ func Fail(ctx *gin.Context, status int, code, message string) {
 	})
 }
 
+func Abort(ctx *gin.Context, status int, code, message string) {
+	ctx.AbortWithStatusJSON(status, Response{
+		Success: false,
+		Error: &ErrorInfo{
+			Code:    code,
+			Message: message,
+		},
+	})
+}
+
 func ErrNotFound(e string) *AppError {
 	return error(http.StatusNotFound, "NOT_FOUND", e)
 }

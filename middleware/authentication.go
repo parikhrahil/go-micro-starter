@@ -27,10 +27,7 @@ func AuthenticationHandler(opts *AuthenticationOpts) gin.HandlerFunc {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
 			apperror := dto.ErrUnauthenticated("Authorization header is required")
-			c.AbortWithStatusJSON(apperror.Status, gin.H{
-				"code":    apperror.Code,
-				"message": apperror.Message,
-			})
+			dto.Abort(c, apperror.Status, apperror.Code, apperror.Message)
 			return
 		}
 
@@ -38,10 +35,7 @@ func AuthenticationHandler(opts *AuthenticationOpts) gin.HandlerFunc {
 		parts := strings.SplitN(authHeader, " ", 2)
 		if !(len(parts) == 2 && parts[0] == "Bearer") {
 			apperror := dto.ErrUnauthenticated("Authorization header must be Bearer token")
-			c.AbortWithStatusJSON(apperror.Status, gin.H{
-				"code":    apperror.Code,
-				"message": apperror.Message,
-			})
+			dto.Abort(c, apperror.Status, apperror.Code, apperror.Message)
 			return
 		}
 
@@ -60,10 +54,7 @@ func AuthenticationHandler(opts *AuthenticationOpts) gin.HandlerFunc {
 
 		if err != nil || token == nil || !token.Valid {
 			apperror := dto.ErrUnauthenticated("Invalid or expired token")
-			c.AbortWithStatusJSON(apperror.Status, gin.H{
-				"code":    apperror.Code,
-				"message": apperror.Message,
-			})
+			dto.Abort(c, apperror.Status, apperror.Code, apperror.Message)
 			return
 		}
 

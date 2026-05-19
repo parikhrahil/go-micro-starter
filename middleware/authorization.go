@@ -11,20 +11,14 @@ func AuthorizationHandler(allowedRoles ...string) gin.HandlerFunc {
 		interfaces, exists := ctx.Get("userRoles")
 		if !exists {
 			apperror := dto.ErrUnauthorized("Authentication role context missing")
-			ctx.AbortWithStatusJSON(apperror.Status, gin.H{
-				"code":    apperror.Code,
-				"message": apperror.Message,
-			})
+			dto.Abort(ctx, apperror.Status, apperror.Code, apperror.Message)
 			return
 		}
 
 		userRoles, ok := interfaces.([]string)
 		if !ok {
 			apperror := dto.ErrUnauthorized("Invalid role context format")
-			ctx.AbortWithStatusJSON(apperror.Status, gin.H{
-				"code":    apperror.Code,
-				"message": apperror.Message,
-			})
+			dto.Abort(ctx, apperror.Status, apperror.Code, apperror.Message)
 			return
 		}
 
@@ -40,10 +34,7 @@ func AuthorizationHandler(allowedRoles ...string) gin.HandlerFunc {
 
 		if !hasAccess {
 			apperror := dto.ErrUnauthorized("You do not have permission to access this resource")
-			ctx.AbortWithStatusJSON(apperror.Status, gin.H{
-				"code":    apperror.Code,
-				"message": apperror.Message,
-			})
+			dto.Abort(ctx, apperror.Status, apperror.Code, apperror.Message)
 			return
 		}
 
