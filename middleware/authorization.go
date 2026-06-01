@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"slices"
+
 	"github.com/parikhrahil/go-micro-starter/dto"
 
 	"github.com/gin-gonic/gin"
@@ -24,11 +26,9 @@ func AuthorizationHandler(allowedRoles ...string) gin.HandlerFunc {
 
 		hasAccess := false
 		for _, allowedRole := range allowedRoles {
-			for _, userRole := range userRoles {
-				if allowedRole == userRole {
-					hasAccess = true
-					break
-				}
+			if slices.Contains(userRoles, allowedRole) {
+				hasAccess = true
+				break
 			}
 		}
 
