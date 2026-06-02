@@ -12,5 +12,4 @@ type Logger interface {
 	Debug(msg string, fields ...Field)
 	Fatal(msg string, fields ...Field)
 	Panic(msg string, fields ...Field)
-	WithFields(fields ...Field)
 }

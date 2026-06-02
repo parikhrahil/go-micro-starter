@@ -1,7 +1,6 @@
 package router
 
 import (
-	"github.com/parikhrahil/go-micro-starter/config"
 	"github.com/parikhrahil/go-micro-starter/dto"
 	"github.com/parikhrahil/go-micro-starter/logger"
 	"github.com/parikhrahil/go-micro-starter/middleware"
@@ -21,12 +20,7 @@ func New(opts *Opts) *gin.Engine {
 	// Add middleware for logging and error handling
 	logging := middleware.LogHandler(opts.Logger)
 	error := middleware.ErrorHandler()
-	telemetry := middleware.TelemetryHandler(&middleware.TelemetryOpts{
-		ServiceName: config.GetEnv("OTEL_SERVICE_NAME", ""),
-		Log:         opts.Logger,
-	})
 
-	router.Use(telemetry)
 	router.Use(logging)
 	router.Use(error)
 

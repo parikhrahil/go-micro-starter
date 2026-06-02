@@ -9,8 +9,7 @@ import (
 )
 
 type zLog struct {
-	log    zerolog.Logger
-	fields []Field
+	log zerolog.Logger
 }
 
 type Opts struct {
@@ -41,37 +40,31 @@ func New(opts *Opts) (Logger, error) {
 	return &zLog{log: log}, nil
 }
 
-func (l *zLog) WithFields(fields ...Field) {
-	if len(fields) > 0 {
-		l.fields = fields
-	}
-}
-
 func (l *zLog) Info(msg string, fields ...Field) {
-	loglevel(l.log.Info(), msg, append(l.fields, fields...))
+	loglevel(l.log.Info(), msg, fields...)
 }
 
 func (l *zLog) Warn(msg string, fields ...Field) {
-	loglevel(l.log.Warn(), msg, append(l.fields, fields...))
+	loglevel(l.log.Warn(), msg, fields...)
 }
 
 func (l *zLog) Debug(msg string, fields ...Field) {
-	loglevel(l.log.Debug(), msg, append(l.fields, fields...))
+	loglevel(l.log.Debug(), msg, fields...)
 }
 
 func (l *zLog) Error(msg string, fields ...Field) {
-	loglevel(l.log.Error(), msg, append(l.fields, fields...))
+	loglevel(l.log.Error(), msg, fields...)
 }
 
 func (l *zLog) Fatal(msg string, fields ...Field) {
-	loglevel(l.log.Fatal(), msg, append(l.fields, fields...))
+	loglevel(l.log.Fatal(), msg, fields...)
 }
 
 func (l *zLog) Panic(msg string, fields ...Field) {
-	loglevel(l.log.Panic(), msg, append(l.fields, fields...))
+	loglevel(l.log.Panic(), msg, fields...)
 }
 
-func loglevel(e *zerolog.Event, msg string, fields []Field) {
+func loglevel(e *zerolog.Event, msg string, fields ...Field) {
 	for _, f := range fields {
 		e.Interface(f.Key, f.Value)
 	}
